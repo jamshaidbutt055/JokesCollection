@@ -1,0 +1,4 @@
+export const Jokes = {
+  GET_SEARCH_RESULTS: "SEARCH_FROM_API",
+  GET_RANDOM_RESULTS: "RANDOM_FROM_API",
+};

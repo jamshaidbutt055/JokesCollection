@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import LogoIcon from "@mui/icons-material/MoodSharp";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Template from "./components/template";
+import store from "./redux/store";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <div className="App">
+        <AppBar position="relative">
+          <Toolbar>
+            <Typography variant="h5" color="inherit" noWrap>
+              J<LogoIcon sx={{ mb: "-5px", pb: "3px" }} />
+              kes Collection
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Template />
+        <ToastContainer />
+      </div>
+    </Provider>
   );
 }
 
