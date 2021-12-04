@@ -9,7 +9,7 @@ import store from "./redux/store";
 function App() {
   return (
     <Provider store={store}>
-      <div className="App">
+      <div className="App" title="app">
         <AppBar position="relative">
           <Toolbar>
             <Typography variant="h5" color="inherit" noWrap>

@@ -3,23 +3,22 @@ import {
   FormControl,
   Grid,
   InputLabel,
-  MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import React, { useState } from "react";
+} from "@mui/material"
+import React, { useState } from "react"
 
 export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
-  const [selected, setSelected] = useState("jokes");
-  const [number, setNumber] = useState(1);
-  const [disabled, setDisabled] = useState(false);
+  const [selected, setSelected] = useState("jokes")
+  const [number, setNumber] = useState(1)
+  const [disabled, setDisabled] = useState(false)
 
   const selectChange = (event) => {
-    setSelected(event.target.value);
-    if (event.target.value === "gif") setDisabled(true);
-    else setDisabled(false);
-    onInputChange(event);
-  };
+    setSelected(event.target.value)
+    if (event.target.value === "gif") setDisabled(true)
+    else setDisabled(false)
+    onInputChange(event)
+  }
 
   const onNumberChange = (event) => {
     let num =
@@ -27,11 +26,11 @@ export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
       event.target.value > 10 ||
       isNaN(event.target.value)
         ? 1
-        : event.target.value;
-    event.target.value = num;
-    setNumber(num);
-    onInputChange(event);
-  };
+        : event.target.value
+    event.target.value = num
+    setNumber(num)
+    onInputChange(event)
+  }
 
   return (
     <form onSubmit={onSubmitClick}>
@@ -49,6 +48,7 @@ export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
         <Grid item xs={12} md={2}>
           <TextField
             fullWidth
+            data-testid="number"
             label="No. of results"
             value={number}
             variant="outlined"
@@ -61,16 +61,20 @@ export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
           <FormControl fullWidth>
             <InputLabel id="search-label">Type</InputLabel>
             <Select
+              data-testid="select"
+              native={true}
               value={selected}
               labelId="search-label"
               id="search-type"
               label="Type"
               name="type"
-              onChange={selectChange}
-            >
-              <MenuItem value={"jokes"}>Jokes</MenuItem>
-              <MenuItem value={"memes"}>Memes</MenuItem>
-              <MenuItem value={"gif"}>Gif</MenuItem>
+              onChange={selectChange}>
+              <option value={"jokes"}>Jokes</option>
+              <option value={"memes"}>Memes</option>
+              <option value={"gif"}>Gif</option>
+              {/* <MenuItem data-testid='select-options ' value={"jokes"}>Jokes</MenuItem>
+              <MenuItem data-testid='select-options' value={"memes"}>Memes</MenuItem>
+              <MenuItem data-testid='select-options' value={"gif"}>Gif</MenuItem> */}
             </Select>
           </FormControl>
         </Grid>
@@ -79,8 +83,7 @@ export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
             fullWidth
             sx={{ height: "100%" }}
             variant="contained"
-            type="submit"
-          >
+            type="submit">
             Search
           </Button>
         </Grid>
@@ -90,12 +93,11 @@ export const SearchForm = ({ onInputChange, onSubmitClick, onRandomClick }) => {
             sx={{ height: "100%" }}
             variant="outlined"
             disabled={disabled}
-            onClick={onRandomClick}
-          >
+            onClick={onRandomClick}>
             Random
           </Button>
         </Grid>
       </Grid>
     </form>
-  );
-};
+  )
+}

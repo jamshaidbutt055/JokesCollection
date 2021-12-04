@@ -1,49 +1,53 @@
-import React, { useState } from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CssBaseline from "@mui/material/CssBaseline";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { SearchForm } from "./SearchForm";
-import axios from "../axiosConfig";
-import { ThumbDown, ThumbUp } from "@mui/icons-material";
-import { toast } from "react-toastify";
-import { getRandomResult, getSearchResult } from "../redux/jokes.action";
-import { connect } from "react-redux";
+import React, { useState } from "react"
+import Button from "@mui/material/Button"
+import Card from "@mui/material/Card"
+import CardActions from "@mui/material/CardActions"
+import CardContent from "@mui/material/CardContent"
+import CardMedia from "@mui/material/CardMedia"
+import CssBaseline from "@mui/material/CssBaseline"
+import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
+import Container from "@mui/material/Container"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { SearchForm } from "./SearchForm"
+import axios from "../axiosConfig"
+import { ThumbDown, ThumbUp } from "@mui/icons-material"
+import { toast } from "react-toastify"
+import { getRandomResult, getSearchResult } from "../redux/jokes.action"
+import { connect } from "react-redux"
 
-const theme = createTheme();
+const theme = createTheme()
 
 function Template({ getSearch, getRandom, queryResult }) {
   const [inputForm, setInputForm] = useState({
     keywords: "",
     noOfResults: 1,
     type: "jokes",
-  });
+  })
 
   const handleChange = (event) => {
-    setInputForm({ ...inputForm, [event.target.name]: event.target.value });
-  };
+    setInputForm({ ...inputForm, [event.target.name]: event.target.value })
+  }
 
   const vote = (id, type, voteType) => {
+    if (id === undefined) {
+      toast.error("Voting is not possible at the time.")
+      return
+    }
     try {
       axios
         .post(type + "/" + id + "/" + voteType, null, { params: {} })
         .then((response) => {
-          toast.success(response.data.message);
-        });
+          toast.success(response.data.message)
+        })
     } catch (err) {
-      console.error(err);
-      toast.error(err);
+      console.error(err)
+      toast.error(err)
     }
-  };
+  }
 
   const handleRandom = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const options = {
       type: inputForm.type,
       params:
@@ -52,13 +56,13 @@ function Template({ getSearch, getRandom, queryResult }) {
               keywords: inputForm.keywords,
             }
           : {},
-    };
+    }
 
-    getRandom(options);
-  };
+    getRandom(options)
+  }
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     const options = {
       type: inputForm.type,
       params:
@@ -71,10 +75,10 @@ function Template({ getSearch, getRandom, queryResult }) {
               number: inputForm.noOfResults,
               query: inputForm.keywords,
             },
-    };
+    }
 
-    getSearch(options);
-  };
+    getSearch(options)
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -85,8 +89,7 @@ function Template({ getSearch, getRandom, queryResult }) {
           variant="h2"
           align="center"
           color="text.primary"
-          gutterBottom
-        >
+          gutterBottom>
           Jokes Search
         </Typography>
         <SearchForm
@@ -109,7 +112,7 @@ function Template({ getSearch, getRandom, queryResult }) {
                 />
               ) : (
                 <></>
-              );
+              )
               const contentElement = card.hasOwnProperty("joke") ? (
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography gutterBottom variant="h5" component="h2">
@@ -118,28 +121,26 @@ function Template({ getSearch, getRandom, queryResult }) {
                 </CardContent>
               ) : (
                 <></>
-              );
+              )
               const votingElement =
                 inputForm.type === "jokes" || inputForm.type === "memes" ? (
                   <CardActions>
                     <Button
                       size="small"
                       title="Up Vote"
-                      onClick={() => vote(card.id, inputForm.type, "upvote")}
-                    >
+                      onClick={() => vote(card.id, inputForm.type, "upvote")}>
                       <ThumbUp />
                     </Button>
                     <Button
                       size="small"
                       title="Down Vote"
-                      onClick={() => vote(card.id, inputForm.type, "downvote")}
-                    >
+                      onClick={() => vote(card.id, inputForm.type, "downvote")}>
                       <ThumbDown />
                     </Button>
                   </CardActions>
                 ) : (
                   <></>
-                );
+                )
               return (
                 <Grid item key={card.id} xs={12} sm={6} md={4}>
                   <Card
@@ -147,36 +148,32 @@ function Template({ getSearch, getRandom, queryResult }) {
                       height: "100%",
                       display: "flex",
                       flexDirection: "column",
-                    }}
-                  >
+                    }}>
                     {mediaElement}
                     {contentElement}
                     {votingElement}
                   </Card>
                 </Grid>
-              );
+              )
             })}
           </Grid>
         </Container>
       </main>
     </ThemeProvider>
-  );
+  )
 }
 
 const mapStateToProps = (state) => {
   return {
     queryResult: state.queryResult,
-  };
-};
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSearch: (options) => {
-      const callback = getSearchResult(options);
-      dispatch((callbackDispatch) => callback(callbackDispatch));
-    },
+    getSearch: (options) => dispatch(getSearchResult(options)),
     getRandom: (options) => dispatch(getRandomResult(options)),
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Template);
+export default connect(mapStateToProps, mapDispatchToProps)(Template)
